@@ -1,0 +1,8 @@
+usr/include/ghostty.h
+usr/include/module.modulemap
+
+# Exclude libghostty-vt for the preview
+# https://mitchellh.com/writing/libghostty-is-coming
+# ghostty does not have a runtime dependency on libghostty-vt
+usr/include/ghostty/*
+usr/lib/libghostty-vt*

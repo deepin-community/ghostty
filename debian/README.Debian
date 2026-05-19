@@ -1,0 +1,68 @@
+Zig Packaging
+=============
+Developers of the Zig programming language are strong proponents
+of static linking. Though the language has support for dynamic
+linking, most of the Zig dependencies are statically linked.
+This is quite similar to the Golang and Rust situation in the
+Debian packaging context. 
+
+Currently, there is no Zig debhelper and hence no support to
+aid static linking of dependencies through fields in the
+control file. Consequently, the initial proposed Ghostty
+package has ~30 build dependencies vendored. These are
+direct and transitive dependencies used by the upstream
+project.
+
+As future work, some of the dependencies of Ghostty
+could be packaged and built and linked through a debhelper
+for Zig.
+
+Note: system dependencies like harfbuzz, libpng,
+freetype, fontconfig and zlib are not vendored. They
+are dynamically linked.
+
+Linker error
+============
+The Ghostty builds currently report an LLD error, which is actually
+a warning. 
+
+----
+error: warning(link): unexpected LLD stderr:
+ld.lld: warning: 
+/<<PKGBUILDDIR>>/.zig-cache/o/e653b1f5ee8c2e0b0637e60bea93c0bc/libcimgui.a: 
+archive member '/usr/lib/x86_64-linux-gnu/libfreetype.so' is neither ET_REL nor 
+LLVM bitcode
+----
+
+There is an open Zig issue to address this 
+(https://github.com/ziglang/zig/issues/20476). The warning
+does not fail the build.
+
+OpenGL requirements for GPU acceleration
+========================================
+Ghosty 1.2.X requires OpenGL version 4.3 and above. If unavailable,
+GPU acceleration will not work and the Ghostty fails to launch
+with this error:
+
+---
+warning(gtk_ghostty_surface): failed to make GL context current: Unable to 
+create a GL context
+warning(gtk_ghostty_surface): this error is almost always due to a library, 
+driver, or GTK issue
+warning(gtk_ghostty_surface): this is a common cause of this issue: 
+https://ghostty.org/docs/help/gtk-opengl-context
+---
+
+In such environments, Ghostty could be launched without GPU accel using the
+LIBGL_ALWAYS_SOFTWARE environment variable.
+
+```
+LIBGL_ALWAYS_SOFTWARE=true ghostty
+```
+
+To determine the OpenGL version, use:
+```
+$ glxinfo | grep "OpenGL version"
+OpenGL version string: 4.6 (Compatibility Profile) Mesa 25.3.3-1ubuntu1
+```
+

@@ -1,0 +1,18 @@
+Description: Remove sentry and its vendored dependencies
+  Ghostty uses sentry for crash reporting. The upstream
+  project has sentry disabled on Linux, by default. This
+  patch removes the sentry dependency and hence removes
+  sentry and breakpad from the vendor tarball.
+Forwarded: not-needed
+Author: Pushkar Kulkarni <pushkar.kulkarni@canonical.com>
+
+--- a/build.zig.zon
++++ b/build.zig.zon
+@@ -65,7 +65,6 @@
+         .macos = .{ .path = "./pkg/macos", .lazy = true },
+         .oniguruma = .{ .path = "./pkg/oniguruma", .lazy = true },
+         .opengl = .{ .path = "./pkg/opengl", .lazy = true },
+-        .sentry = .{ .path = "./pkg/sentry", .lazy = true },
+         .simdutf = .{ .path = "./pkg/simdutf", .lazy = true },
+         .utfcpp = .{ .path = "./pkg/utfcpp", .lazy = true },
+         .wuffs = .{ .path = "./pkg/wuffs", .lazy = true },

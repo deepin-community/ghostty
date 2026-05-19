@@ -1,0 +1,19 @@
+Description: Set the default logging level to .warn
+  Ghostty has .info as the default logging level. Though
+  .debug is the more verbose level, .info also dumps
+  substantial logs on stderr. This patch uses .warn as
+  the default.
+Forwarded: not-needed
+Author: Pushkar Kulkarni <pushkar.kulkarni@canonical.com>
+
+--- a/src/main_ghostty.zig
++++ b/src/main_ghostty.zig
+@@ -172,7 +172,7 @@
+     // builds.
+     .log_level = switch (builtin.mode) {
+         .Debug => .debug,
+-        else => .info,
++        else => .warn,
+     },
+ 
+     .logFn = logFn,
