@@ -1,0 +1,16 @@
+Test-Command: ghostty --version
+Depends: @
+Features: test-name=check-version
+
+Test-Command: man -w ghostty
+Depends: @
+Features: test-name=verify-man-page-exists
+
+Test-Command: desktop-file-validate /usr/share/applications/com.mitchellh.ghostty.desktop
+Features: test-name=validate-desktop-file
+Depends: @, desktop-file-utils
+
+Test-Command: xvfb-run -a ghostty -e ls /root
+Features: test-name=run-command
+Depends: @, xvfb
+Restrictions: needs-root allow-stderr

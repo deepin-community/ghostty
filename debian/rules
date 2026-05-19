@@ -1,4 +1,55 @@
 #!/usr/bin/make -f
 
+export DH_VERBOSE = 1
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+UPSTREAM_VERSION := $(shell dpkg-parsechangelog -S Version|cut -d- -f1)
+ZIG_VENDOR_DIR = zig-vendor
+VENDOR_TARBALL = ghostty_$(UPSTREAM_VERSION).orig-$(ZIG_VENDOR_DIR).tar.gz
+ZIG_FSYS_FLAGS = -fsys=freetype -fsys=harfbuzz -fsys=fontconfig -fsys=libpng -fsys=zlib
+SOURCE_DATE_EPOCH = $(shell dpkg-parsechangelog -STimestamp)
+
+
+.PHONY: get-orig vendor-tarball vendor-sources
+
 %:
 	dh $@
+
+override_dh_auto_clean:
+	rm -rf .zig-cache zig-out
+
+export ZIG_GLOBAL_CACHE_DIR = $(CURDIR)/debian/zig-cache
+
+override_dh_auto_build:
+	zig0.15 build -Doptimize=ReleaseFast -Dpie=true -Demit-docs $(ZIG_FSYS_FLAGS)
+
+override_dh_auto_install:
+	zig0.15 build -p debian/tmp/usr -Doptimize=ReleaseFast -Dpie=true -Demit-docs $(ZIG_FSYS_FLAGS)
+	chrpath -d debian/tmp/usr/bin/ghostty
+	rm debian/tmp/usr/share/terminfo/g/ghostty # this file will installed by the ncurses-term dependency
+	sed -i 's|debian/tmp/usr/bin/ghostty|/usr/bin/ghostty|g' debian/tmp/usr/share/applications/com.mitchellh.ghostty.desktop
+	sed -i 's|debian/tmp/usr/bin/ghostty|/usr/bin/ghostty|g' debian/tmp/usr/share/dbus-1/services/com.mitchellh.ghostty.service
+	sed -i 's|debian/tmp/usr/bin/ghostty|/usr/bin/ghostty|g' debian/tmp/usr/share/systemd/user/app-com.mitchellh.ghostty.service
+
+override_dh_auto_test:
+	zig0.15 build test $(ZIG_FSYS_FLAGS)
+
+override_dh_fixperms:
+	dh_fixperms
+	chmod 0644 debian/ghostty/usr/share/kio/servicemenus/com.mitchellh.ghostty.desktop
+	find debian/ghostty/usr/share/ghostty/themes -exec \
+		touch --no-dereference --date="@$(SOURCE_DATE_EPOCH)" {} +
+
+vendor-tarball-check:
+	if [ -e ../$(VENDOR_TARBALL) ]; then echo "../$(VENDOR_TARBALL) already exists. Aborting."; exit 1; fi
+
+vendor-sources:
+	debian/update-sources.py || exit 1
+
+vendor-tarball: vendor-tarball-check vendor-sources
+	tar --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner \
+          --exclude='./zig-vendor/*/examples' --exclude='./zig-vendor/*/*/examples' \
+          --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime -caf ../$(VENDOR_TARBALL) $(ZIG_VENDOR_DIR)
+
+get-orig-source: vendor-tarball
+	uscan --download-current-version

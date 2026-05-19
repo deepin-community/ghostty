@@ -1,0 +1,45 @@
+Description: Use TERM=xterm-256color for remote host shells
+  Ghostty while ssh'ing to remote hosts propagates TERM=xterm-ghostty.
+  This is not recognized by remote hosts. Even if the remote host
+  has a latest ncurses-term, it will only recognize TERM=ghostty.
+  Flag --shell-integration-features=ssh-env does an auto conversion
+  of TERM to `xterm-256color`.
+Author: Pushkar Kulkarni <pushkar.kulkarni@canonical.com>
+Forwarded: no
+
+--- a/dist/linux/app.desktop.in
++++ b/dist/linux/app.desktop.in
+@@ -4,7 +4,7 @@
+ Type=Application
+ Comment=A terminal emulator
+ TryExec=@GHOSTTY@
+-Exec=@GHOSTTY@ --gtk-single-instance=true
++Exec=@GHOSTTY@ --gtk-single-instance=true --shell-integration-features=ssh-env
+ Icon=com.mitchellh.ghostty
+ Categories=System;TerminalEmulator;
+ Keywords=terminal;tty;pty;
+@@ -23,4 +23,4 @@
+ 
+ [Desktop Action new-window]
+ Name=New Window
+-Exec=@GHOSTTY@ --gtk-single-instance=true
++Exec=@GHOSTTY@ --gtk-single-instance=true --shell-integration-features=ssh-env
+--- a/dist/linux/dbus.service.in
++++ b/dist/linux/dbus.service.in
+@@ -1,4 +1,4 @@
+ [D-BUS Service]
+ Name=@APPID@
+ SystemdService=app-@APPID@.service
+-Exec=@GHOSTTY@ --gtk-single-instance=true --initial-window=false
++Exec=@GHOSTTY@ --gtk-single-instance=true --initial-window=false --shell-integration-features=ssh-env
+--- a/dist/linux/systemd.service.in
++++ b/dist/linux/systemd.service.in
+@@ -8,7 +8,7 @@
+ Type=notify-reload
+ ReloadSignal=SIGUSR2
+ BusName=@APPID@
+-ExecStart=@GHOSTTY@ --gtk-single-instance=true --initial-window=false
++ExecStart=@GHOSTTY@ --gtk-single-instance=true --initial-window=false --shell-integration-features=ssh-env
+ 
+ [Install]
+ WantedBy=graphical-session.target

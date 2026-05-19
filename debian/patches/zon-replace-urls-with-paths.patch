@@ -1,0 +1,317 @@
+Description: Replace dependency urls with local paths.
+  The Zig package manager downloads dependencies during build-time.
+  For the Debian package build, these dependencies are vendored
+  through an upstream tarball. The urls are replaced by paths to the
+  vendored sources.
+Forwarded: not-needed
+Author: Pushkar Kulkarni <pushkar.kulkarni@canonical.com>
+
+--- a/build.zig.zon
++++ b/build.zig.zon
+@@ -9,56 +9,47 @@
+ 
+         .libxev = .{
+             // mitchellh/libxev
+-            .url = "https://deps.files.ghostty.org/libxev-34fa50878aec6e5fa8f532867001ab3c36fae23e.tar.gz",
+-            .hash = "libxev-0.0.0-86vtc4IcEwCqEYxEYoN_3KXmc6A9VLcm22aVImfvecYs",
++            .path = "zig-vendor/libxev-0.0.0-86vtc4IcEwCqEYxEYoN_3KXmc6A9VLcm22aVImfvecYs",
+             .lazy = true,
+         },
+         .vaxis = .{
+             // rockorager/libvaxis
+-            .url = "https://deps.files.ghostty.org/vaxis-7dbb9fd3122e4ffad262dd7c151d80d863b68558.tar.gz",
+-            .hash = "vaxis-0.5.1-BWNV_LosCQAGmCCNOLljCIw6j6-yt53tji6n6rwJ2BhS",
++            .path = "zig-vendor/vaxis-0.5.1-BWNV_LosCQAGmCCNOLljCIw6j6-yt53tji6n6rwJ2BhS",
+             .lazy = true,
+         },
+         .z2d = .{
+             // vancluever/z2d
+-            .url = "https://deps.files.ghostty.org/z2d-0.10.0-j5P_Hu-6FgBsZNgwphIqh17jDnj8_yPtD8yzjO6PpHRQ.tar.gz",
+-            .hash = "z2d-0.10.0-j5P_Hu-6FgBsZNgwphIqh17jDnj8_yPtD8yzjO6PpHRQ",
++            .path = "zig-vendor/z2d-0.10.0-j5P_Hu-6FgBsZNgwphIqh17jDnj8_yPtD8yzjO6PpHRQ",
+             .lazy = true,
+         },
+         .zig_objc = .{
+             // mitchellh/zig-objc
+-            .url = "https://deps.files.ghostty.org/zig_objc-f356ed02833f0f1b8e84d50bed9e807bf7cdc0ae.tar.gz",
+-            .hash = "zig_objc-0.0.0-Ir_Sp5gTAQCvxxR7oVIrPXxXwsfKgVP7_wqoOQrZjFeK",
++            .path = "zig-vendor/zig_objc-0.0.0-Ir_Sp5gTAQCvxxR7oVIrPXxXwsfKgVP7_wqoOQrZjFeK",
+             .lazy = true,
+         },
+         .zig_js = .{
+             // mitchellh/zig-js
+-            .url = "https://deps.files.ghostty.org/zig_js-04db83c617da1956ac5adc1cb9ba1e434c1cb6fd.tar.gz",
+-            .hash = "zig_js-0.0.0-rjCAV-6GAADxFug7rDmPH-uM_XcnJ5NmuAMJCAscMjhi",
++            .path = "zig-vendor/zig_js-0.0.0-rjCAV-6GAADxFug7rDmPH-uM_XcnJ5NmuAMJCAscMjhi",
+             .lazy = true,
+         },
+         .uucode = .{
+             // jacobsandlund/uucode
+-            .url = "https://deps.files.ghostty.org/uucode-0.2.0-ZZjBPqZVVABQepOqZHR7vV_NcaN-wats0IB6o-Exj6m9.tar.gz",
+-            .hash = "uucode-0.2.0-ZZjBPqZVVABQepOqZHR7vV_NcaN-wats0IB6o-Exj6m9",
++            .path = "zig-vendor/uucode-0.2.0-ZZjBPqZVVABQepOqZHR7vV_NcaN-wats0IB6o-Exj6m9",
+         },
+         .zig_wayland = .{
+             // codeberg ifreund/zig-wayland
+-            .url = "https://deps.files.ghostty.org/zig_wayland-1b5c038ec10da20ed3a15b0b2a6db1c21383e8ea.tar.gz",
+-            .hash = "wayland-0.5.0-dev-lQa1khrMAQDJDwYFKpdH3HizherB7sHo5dKMECfvxQHe",
++            .path = "zig-vendor/wayland-0.5.0-dev-lQa1khrMAQDJDwYFKpdH3HizherB7sHo5dKMECfvxQHe",
+             .lazy = true,
+         },
+         .zf = .{
+             // natecraddock/zf
+-            .url = "https://deps.files.ghostty.org/zf-3c52637b7e937c5ae61fd679717da3e276765b23.tar.gz",
+-            .hash = "zf-0.10.3-OIRy8RuJAACKA3Lohoumrt85nRbHwbpMcUaLES8vxDnh",
++            .path = "zig-vendor/zf-0.10.3-OIRy8RuJAACKA3Lohoumrt85nRbHwbpMcUaLES8vxDnh",
+             .lazy = true,
+         },
+         .gobject = .{
+             // https://github.com/ghostty-org/zig-gobject based on zig_gobject
+             // Temporary until we generate them at build time automatically.
+-            .url = "https://deps.files.ghostty.org/gobject-2025-11-08-23-1.tar.zst",
+-            .hash = "gobject-0.3.0-Skun7ANLnwDvEfIpVmohcppXgOvg_I6YOJFmPIsKfXk-",
++            .path = "zig-vendor/gobject-0.3.0-Skun7ANLnwDvEfIpVmohcppXgOvg_I6YOJFmPIsKfXk-",
+             .lazy = true,
+         },
+ 
+@@ -86,30 +77,25 @@
+ 
+         // Wayland
+         .wayland = .{
+-            .url = "https://deps.files.ghostty.org/wayland-9cb3d7aa9dc995ffafdbdef7ab86a949d0fb0e7d.tar.gz",
+-            .hash = "N-V-__8AAKrHGAAs2shYq8UkE6bGcR1QJtLTyOE_lcosMn6t",
++            .path = "zig-vendor/wayland-N-V-__8AAKrHGAAs2shYq8UkE6bGcR1QJtLTyOE_lcosMn6t",
+             .lazy = true,
+         },
+         .wayland_protocols = .{
+-            .url = "https://deps.files.ghostty.org/wayland-protocols-258d8f88f2c8c25a830c6316f87d23ce1a0f12d9.tar.gz",
+-            .hash = "N-V-__8AAKw-DAAaV8bOAAGqA0-oD7o-HNIlPFYKRXSPT03S",
++            .path = "zig-vendor/wayland_protocols-N-V-__8AAKw-DAAaV8bOAAGqA0-oD7o-HNIlPFYKRXSPT03S",
+             .lazy = true,
+         },
+         .plasma_wayland_protocols = .{
+-            .url = "https://deps.files.ghostty.org/plasma_wayland_protocols-12207e0851c12acdeee0991e893e0132fc87bb763969a585dc16ecca33e88334c566.tar.gz",
+-            .hash = "N-V-__8AAKYZBAB-CFHBKs3u4JkeiT4BMvyHu3Y5aaWF3Bbs",
++            .path = "zig-vendor/plasma_wayland_protocols-N-V-__8AAKYZBAB-CFHBKs3u4JkeiT4BMvyHu3Y5aaWF3Bbs",
+             .lazy = true,
+         },
+ 
+         // Fonts
+         .jetbrains_mono = .{
+-            .url = "https://deps.files.ghostty.org/JetBrainsMono-2.304.tar.gz",
+-            .hash = "N-V-__8AAIC5lwAVPJJzxnCAahSvZTIlG-HhtOvnM1uh-66x",
++            .path = "zig-vendor/jetbrains_mono-N-V-__8AAIC5lwAVPJJzxnCAahSvZTIlG-HhtOvnM1uh-66x",
+             .lazy = true,
+         },
+         .nerd_fonts_symbols_only = .{
+-            .url = "https://deps.files.ghostty.org/NerdFontsSymbolsOnly-3.4.0.tar.gz",
+-            .hash = "N-V-__8AAMVLTABmYkLqhZPLXnMl-KyN38R8UVYqGrxqO26s",
++            .path = "zig-vendor/nerd_fonts_symbols_only-N-V-__8AAMVLTABmYkLqhZPLXnMl-KyN38R8UVYqGrxqO26s",
+             .lazy = true,
+         },
+ 
+@@ -117,8 +103,7 @@
+         .apple_sdk = .{ .path = "./pkg/apple-sdk" },
+         .android_ndk = .{ .path = "./pkg/android-ndk" },
+         .iterm2_themes = .{
+-            .url = "https://deps.files.ghostty.org/ghostty-themes-release-20260216-151611-fc73ce3.tgz",
+-            .hash = "N-V-__8AABVbAwBwDRyZONfx553tvMW8_A2OKUoLzPUSRiLF",
++            .path = "zig-vendor/iterm2_themes-N-V-__8AABVbAwBwDRyZONfx553tvMW8_A2OKUoLzPUSRiLF",
+             .lazy = true,
+         },
+     },
+--- a/pkg/libintl/build.zig.zon
++++ b/pkg/libintl/build.zig.zon
+@@ -5,8 +5,7 @@
+     .paths = .{""},
+     .dependencies = .{
+         .gettext = .{
+-            .url = "https://deps.files.ghostty.org/gettext-0.24.tar.gz",
+-            .hash = "N-V-__8AADcZkgn4cMhTUpIz6mShCKyqqB-NBtf_S2bHaTC-",
++            .path = "../../zig-vendor/gettext-N-V-__8AADcZkgn4cMhTUpIz6mShCKyqqB-NBtf_S2bHaTC-",
+             .lazy = true,
+         },
+ 
+--- a/pkg/oniguruma/build.zig.zon
++++ b/pkg/oniguruma/build.zig.zon
+@@ -6,8 +6,7 @@
+     .dependencies = .{
+         // kkos/oniguruma
+         .oniguruma = .{
+-            .url = "https://deps.files.ghostty.org/oniguruma-1220c15e72eadd0d9085a8af134904d9a0f5dfcbed5f606ad60edc60ebeccd9706bb.tar.gz",
+-            .hash = "N-V-__8AAHjwMQDBXnLq3Q2QhaivE0kE2aD138vtX2Bq1g7c",
++            .path = "../../zig-vendor/oniguruma-N-V-__8AAHjwMQDBXnLq3Q2QhaivE0kE2aD138vtX2Bq1g7c",
+             .lazy = true,
+         },
+ 
+--- a/pkg/breakpad/build.zig.zon
++++ b/pkg/breakpad/build.zig.zon
+@@ -5,8 +5,7 @@
+     .paths = .{""},
+     .dependencies = .{
+         .breakpad = .{
+-            .url = "https://deps.files.ghostty.org/breakpad-b99f444ba5f6b98cac261cbb391d8766b34a5918.tar.gz",
+-            .hash = "N-V-__8AALw2uwF_03u4JRkZwRLc3Y9hakkYV7NKRR9-RIZJ",
++            .path = "../../zig-vendor/breakpad-N-V-__8AALw2uwF_03u4JRkZwRLc3Y9hakkYV7NKRR9-RIZJ",
+             .lazy = true,
+         },
+ 
+--- a/pkg/glslang/build.zig.zon
++++ b/pkg/glslang/build.zig.zon
+@@ -6,8 +6,7 @@
+     .dependencies = .{
+         // KhronosGroup/glslang
+         .glslang = .{
+-            .url = "https://deps.files.ghostty.org/glslang-12201278a1a05c0ce0b6eb6026c65cd3e9247aa041b1c260324bf29cee559dd23ba1.tar.gz",
+-            .hash = "N-V-__8AABzkUgISeKGgXAzgtutgJsZc0-kkeqBBscJgMkvy",
++            .path = "../../zig-vendor/glslang-N-V-__8AABzkUgISeKGgXAzgtutgJsZc0-kkeqBBscJgMkvy",
+             .lazy = true,
+         },
+ 
+--- a/pkg/gtk4-layer-shell/build.zig.zon
++++ b/pkg/gtk4-layer-shell/build.zig.zon
+@@ -5,13 +5,11 @@
+     .paths = .{""},
+     .dependencies = .{
+         .gtk4_layer_shell = .{
+-            .url = "https://deps.files.ghostty.org/gtk4-layer-shell-1.1.0.tar.gz",
+-            .hash = "N-V-__8AALiNBAA-_0gprYr92CjrMj1I5bqNu0TSJOnjFNSr",
++            .path = "../../zig-vendor/gtk4_layer_shell-N-V-__8AALiNBAA-_0gprYr92CjrMj1I5bqNu0TSJOnjFNSr",
+             .lazy = true,
+         },
+         .wayland_protocols = .{
+-            .url = "https://deps.files.ghostty.org/wayland-protocols-258d8f88f2c8c25a830c6316f87d23ce1a0f12d9.tar.gz",
+-            .hash = "N-V-__8AAKw-DAAaV8bOAAGqA0-oD7o-HNIlPFYKRXSPT03S",
++            .path = "../../zig-vendor/wayland_protocols`N-V-__8AAKw-DAAaV8bOAAGqA0-oD7o-HNIlPFYKRXSPT03S",
+             .lazy = true,
+         },
+     },
+--- a/pkg/sentry/build.zig.zon
++++ b/pkg/sentry/build.zig.zon
+@@ -6,8 +6,7 @@
+     .dependencies = .{
+         // getsentry/sentry-native
+         .sentry = .{
+-            .url = "https://deps.files.ghostty.org/sentry-1220446be831adcca918167647c06c7b825849fa3fba5f22da394667974537a9c77e.tar.gz",
+-            .hash = "N-V-__8AAPlZGwBEa-gxrcypGBZ2R8Bse4JYSfo_ul8i2jlG",
++            .path = "../../zig-vendor/sentry-N-V-__8AAPlZGwBEa-gxrcypGBZ2R8Bse4JYSfo_ul8i2jlG",
+             .lazy = true,
+         },
+ 
+--- a/pkg/spirv-cross/build.zig.zon
++++ b/pkg/spirv-cross/build.zig.zon
+@@ -6,8 +6,7 @@
+     .dependencies = .{
+         // KhronosGroup/SPIRV-Cross
+         .spirv_cross = .{
+-            .url = "https://deps.files.ghostty.org/spirv_cross-1220fb3b5586e8be67bc3feb34cbe749cf42a60d628d2953632c2f8141302748c8da.tar.gz",
+-            .hash = "N-V-__8AANb6pwD7O1WG6L5nvD_rNMvnSc9Cpg1ijSlTYywv",
++            .path = "../../zig-vendor/spirv_cross-N-V-__8AANb6pwD7O1WG6L5nvD_rNMvnSc9Cpg1ijSlTYywv",
+             .lazy = true,
+         },
+ 
+--- a/pkg/wuffs/build.zig.zon
++++ b/pkg/wuffs/build.zig.zon
+@@ -5,15 +5,13 @@
+     .dependencies = .{
+         // google/wuffs
+         .wuffs = .{
+-            .url = "https://deps.files.ghostty.org/wuffs-122037b39d577ec2db3fd7b2130e7b69ef6cc1807d68607a7c232c958315d381b5cd.tar.gz",
+-            .hash = "N-V-__8AAAzZywE3s51XfsLbP9eyEw57ae9swYB9aGB6fCMs",
++            .path = "../../zig-vendor/wuffs-N-V-__8AAAzZywE3s51XfsLbP9eyEw57ae9swYB9aGB6fCMs",
+             .lazy = true,
+         },
+ 
+         // make-github-pseudonymous-again/pixels
+         .pixels = .{
+-            .url = "https://deps.files.ghostty.org/pixels-12207ff340169c7d40c570b4b6a97db614fe47e0d83b5801a932dcd44917424c8806.tar.gz",
+-            .hash = "N-V-__8AADYiAAB_80AWnH1AxXC0tql9thT-R-DYO1gBqTLc",
++            .path = "../../zig-vendor/pixels-N-V-__8AADYiAAB_80AWnH1AxXC0tql9thT-R-DYO1gBqTLc",
+             .lazy = true,
+         },
+ 
+--- a/pkg/libxml2/build.zig.zon
++++ b/pkg/libxml2/build.zig.zon
+@@ -5,8 +5,7 @@
+     .paths = .{""},
+     .dependencies = .{
+         .libxml2 = .{
+-            .url = "https://deps.files.ghostty.org/libxml2-2.11.5.tar.gz",
+-            .hash = "N-V-__8AAG3RoQEyRC2Vw7Qoro5SYBf62IHn3HjqtNVY6aWK",
++            .path = "../../zig-vendor/libxml2-N-V-__8AAG3RoQEyRC2Vw7Qoro5SYBf62IHn3HjqtNVY6aWK",
+             .lazy = true,
+         },
+     },
+--- a/pkg/utfcpp/build.zig.zon
++++ b/pkg/utfcpp/build.zig.zon
+@@ -6,8 +6,7 @@
+     .dependencies = .{
+         // nemtrif/utfcpp
+         .utfcpp = .{
+-            .url = "https://deps.files.ghostty.org/utfcpp-1220d4d18426ca72fc2b7e56ce47273149815501d0d2395c2a98c726b31ba931e641.tar.gz",
+-            .hash = "N-V-__8AAHffAgDU0YQmynL8K35WzkcnMUmBVQHQ0jlcKpjH",
++            .path = "../../zig-vendor/utfcpp-N-V-__8AAHffAgDU0YQmynL8K35WzkcnMUmBVQHQ0jlcKpjH",
+             .lazy = true,
+         },
+ 
+--- a/pkg/highway/build.zig.zon
++++ b/pkg/highway/build.zig.zon
+@@ -6,8 +6,7 @@
+     .dependencies = .{
+         // google/highway
+         .highway = .{
+-            .url = "https://deps.files.ghostty.org/highway-66486a10623fa0d72fe91260f96c892e41aceb06.tar.gz",
+-            .hash = "N-V-__8AAGmZhABbsPJLfbqrh6JTHsXhY6qCaLAQyx25e0XE",
++            .path = "../../zig-vendor/highway-N-V-__8AAGmZhABbsPJLfbqrh6JTHsXhY6qCaLAQyx25e0XE",
+             .lazy = true,
+         },
+ 
+--- a/pkg/dcimgui/build.zig.zon
++++ b/pkg/dcimgui/build.zig.zon
+@@ -8,15 +8,13 @@
+ 
+         .bindings = .{
+             // https://github.com/dearimgui/dear_bindings
+-            .url = "https://deps.files.ghostty.org/DearBindings_v0.17_ImGui_v1.92.5-docking.tar.gz",
+-            .hash = "N-V-__8AANT61wB--nJ95Gj_ctmzAtcjloZ__hRqNw5lC1Kr",
++            .path = "../../zig-vendor/bindings-N-V-__8AANT61wB--nJ95Gj_ctmzAtcjloZ__hRqNw5lC1Kr",
+             .lazy = true,
+         },
+ 
+         .imgui = .{
+             // https://github.com/ocornut/imgui
+-            .url = "https://github.com/ocornut/imgui/archive/refs/tags/v1.92.5-docking.tar.gz",
+-            .hash = "N-V-__8AAEbOfQBnvcFcCX2W5z7tDaN8vaNZGamEQtNOe0UI",
++            .path = "../../zig-vendor/imgui-N-V-__8AAEbOfQBnvcFcCX2W5z7tDaN8vaNZGamEQtNOe0UI",
+             .lazy = true,
+         },
+ 
+--- a/zig-vendor/vaxis-0.5.1-BWNV_LosCQAGmCCNOLljCIw6j6-yt53tji6n6rwJ2BhS/build.zig.zon
++++ b/zig-vendor/vaxis-0.5.1-BWNV_LosCQAGmCCNOLljCIw6j6-yt53tji6n6rwJ2BhS/build.zig.zon
+@@ -6,12 +6,10 @@
+     .dependencies = .{
+         .zigimg = .{
+             // TODO .url = "git+https://github.com/zigimg/zigimg",
+-            .url = "https://github.com/ivanstepanovftw/zigimg/archive/d7b7ab0ba0899643831ef042bd73289510b39906.tar.gz",
+-            .hash = "zigimg-0.1.0-8_eo2vHnEwCIVW34Q14Ec-xUlzIoVg86-7FU2ypPtxms",
++            .path = "../zigimg-0.1.0-8_eo2vHnEwCIVW34Q14Ec-xUlzIoVg86-7FU2ypPtxms",
+         },
+         .uucode = .{
+-            .url = "git+https://github.com/jacobsandlund/uucode#5f05f8f83a75caea201f12cc8ea32a2d82ea9732",
+-            .hash = "uucode-0.1.0-ZZjBPj96QADXyt5sqwBJUnhaDYs_qBeeKijZvlRa0eqM",
++            .path = "../uucode-0.1.0-ZZjBPj96QADXyt5sqwBJUnhaDYs_qBeeKijZvlRa0eqM",
+         },
+     },
+     .paths = .{
+--- a/zig-vendor/zf-0.10.3-OIRy8RuJAACKA3Lohoumrt85nRbHwbpMcUaLES8vxDnh/build.zig.zon
++++ b/zig-vendor/zf-0.10.3-OIRy8RuJAACKA3Lohoumrt85nRbHwbpMcUaLES8vxDnh/build.zig.zon
+@@ -6,8 +6,7 @@
+     .minimum_zig_version = "0.15.2",
+     .dependencies = .{
+         .vaxis = .{
+-            .url = "https://github.com/rockorager/libvaxis/archive/7dbb9fd3122e4ffad262dd7c151d80d863b68558.tar.gz",
+-            .hash = "vaxis-0.5.1-BWNV_LosCQAGmCCNOLljCIw6j6-yt53tji6n6rwJ2BhS",
++            .path = "../vaxis-0.5.1-BWNV_LosCQAGmCCNOLljCIw6j6-yt53tji6n6rwJ2BhS",
+             .lazy = true,
+         },
+     },

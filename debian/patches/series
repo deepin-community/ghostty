@@ -1,0 +1,4 @@
+zon-replace-urls-with-paths.patch
+enforce-shell-integration-ssh-env.patch
+set-default-logging-level-warn.patch
+remove-sentry-deps.patch

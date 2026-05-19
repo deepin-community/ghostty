@@ -1,0 +1,40 @@
+Create the vendor tarball using:
+  make -f debian/rules get-orig 
+
+This updates files under zig-vendor/ and creates a tarball with
+the vendored dependenencies. It also downloads the current
+version's upstream tarball.
+
+This should be done only while packaging a new ghostty release.
+
+Notes
+=====
+Ghostty has dependencies including other Zig and C libraries.
+Most of these are not yet packaged for Debian/Ubuntu. Because
+Zig statically compiles dependencies by default, they need
+to be downloaded and vendored to support the air-gapped Debian
+package builds. See README.Debian for more details.
+
+Build dependencies are defined in the build.zig.zon file for
+every project, where dependencies are declared in the Zig
+Object Notation (ZON). Stand-alone Zig projects do not include
+this file.
+
+To download and vendor, we walk the entire dependency tree parsing
+the ZONs, extracting the names and URLs and downloading the 
+dependencies using `zig fetch`. 
+
+It is natural to assume that Zig should offer the easiest way to 
+parse these ZONs. However, to parse a ZON into a struct, the 
+fields of the struct should match the keys of the ZON. In the
+build.zig.zon case, the keys are the dependency names themselves.
+Hence, using Zig to parse the build.zig.zon is counter-productive
+because it needs one Zig struct per file.
+
+The only approach to write a generic ZON parser is to use the Zig
+AST structs, which needs quite a lot of custom code. Python (and Perl)
+offer easier and compact ways to extract (name, url) pairs for the
+dependencies, using regexes. This is the rationale behind having
+the update-source script written in Python (debian/update-sources.py).
+
+
