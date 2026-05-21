@@ -21,10 +21,10 @@ override_dh_auto_clean:
 export ZIG_GLOBAL_CACHE_DIR = $(CURDIR)/debian/zig-cache
 
 override_dh_auto_build:
-	zig0.15 build -Doptimize=ReleaseFast -Dpie=true -Demit-docs $(ZIG_FSYS_FLAGS)
+	zig0.15 build -Doptimize=ReleaseFast -Dcpu=baseline -Dpie=true -Demit-docs $(ZIG_FSYS_FLAGS)
 
 override_dh_auto_install:
-	zig0.15 build -p debian/tmp/usr -Doptimize=ReleaseFast -Dpie=true -Demit-docs $(ZIG_FSYS_FLAGS)
+	zig0.15 build -p debian/tmp/usr -Doptimize=ReleaseFast -Dcpu=baseline -Dpie=true -Demit-docs $(ZIG_FSYS_FLAGS)
 	chrpath -d debian/tmp/usr/bin/ghostty
 	rm debian/tmp/usr/share/terminfo/g/ghostty # this file will installed by the ncurses-term dependency
 	sed -i 's|debian/tmp/usr/bin/ghostty|/usr/bin/ghostty|g' debian/tmp/usr/share/applications/com.mitchellh.ghostty.desktop
