@@ -5,8 +5,14 @@ ghostty (1.3.0~us1-0ubuntu1deepin1) unstable; urgency=medium
       instructions (e.g. AVX-512) unsupported on older CPUs
     - Adding -Dcpu=baseline ensures the binary runs on all x86-64 machines
     - Fixes SIGILL (illegal instruction) crash on older CPUs
+  * Package libghostty-vt as standalone shared library
+    - Add libghostty-vt and libghostty-vt-dev binary packages to control
+    - Remove libghostty-vt exclusion from not-installed
+    - Create libghostty-vt.install for runtime library
+    - Create libghostty-vt-dev.install for development headers
+    - Enables other applications to use the Ghostty VT engine
 
- -- lichenggang <lichenggang@uniontech.com>  Thu, 21 May 2026 13:14:00 +0800
+ -- lichenggang <lichenggang@uniontech.com>  Thu, 21 May 2026 13:15:00 +0800
 
 ghostty (1.3.0~us1-0ubuntu1) resolute; urgency=medium
 

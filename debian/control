@@ -35,3 +35,28 @@ Description: Fast, feature-rich, and cross-platform terminal emulator
  feature-rich and native. While there are many excellent terminal emulators
  available, they all force you to choose between speed, features, or native
  UIs. Ghostty provides all three.
+
+Package: libghostty-vt
+Section: libs
+Architecture: amd64 arm64
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: Ghostty VT library (shared runtime)
+ libghostty-vt provides the virtual terminal (VT) engine used by Ghostty,
+ packaged as a standalone shared library. It implements terminal emulation
+ including escape sequence processing, text rendering, and scrollback.
+ This library can be used by other applications that need VT terminal
+ capabilities.
+
+Package: libghostty-vt-dev
+Section: libdevel
+Architecture: amd64 arm64
+Depends:
+ libghostty-vt (= ${binary:Version}),
+ ${misc:Depends},
+Description: Ghostty VT library (development files)
+ This package contains the header files and development symlinks
+ for libghostty-vt, the standalone VT engine from Ghostty.
+ Install this package if you want to develop applications that
+ use the Ghostty VT library.
